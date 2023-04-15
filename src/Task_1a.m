@@ -4,12 +4,9 @@
 % find the training reference with the smallest distance and classify as
 % that target
 %% Init
-pic_width = 28;
-pic_height = 28;
-%%
 num_references = 2000;
 num_samples = 1000;
-
+%% Run classification using the first num_references references and the first num_samples test features
 mtrx_references = trainv(1:num_references,:)';
 vec_targets = trainlab(1:num_references);
 
@@ -33,7 +30,7 @@ error_rate = (num_samples-num_correct)/num_samples * 100;
 % b) avoid using excessive time (as when classifying a single image at a time)
 
 
-%% Determine the misclassified pictures
+%% Plot some misclassified pictures
 % Plot the first 5 misclassified pictures
 num_plotted = 0;
 i = 100;
