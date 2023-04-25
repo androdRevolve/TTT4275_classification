@@ -59,6 +59,23 @@ heatmap_NN.XLabel = "True value";
 heatmap_NN.YLabel = "Classification";
 heatmap_NN.ColorScaling = 'log';
 
+% %% Plot some misclassified pictures
+% % Plot the first 5 misclassified pictures
+% num_plotted = 0;
+% i = 4000;
+% while num_plotted < 5
+%     if(~is_equal(i))
+%         % Convert picture from vector to matrix
+%         mtrx_pic = zeros(col_size,row_size); mtrx_pic(:) = testv(52,:);
+%         image(mtrx_pic');
+%         num_plotted = num_plotted+1;
+%     end
+%     i = i+1;
+% end
+
+
+
+
 %% c) Now design a KNN classifier with K=7. Find the confusion matrix and the error rate and
 % compare to the two other systems.
 tic;
@@ -73,7 +90,7 @@ end
 %% Classify these neighbors from their indices
 % Identify the K nearest neighbours of each feature vector
 [~,I] = mink(distances, K_knn, 1);
-classes_neighbors = floorDiv(I,N_clusters+1);
+classes_neighbors = floorDiv(I-1,N_clusters);
 
 classes = zeros(length(testlab), 1);
 % Majority vote; identify the class with the highest number of neighbors,
@@ -121,6 +138,8 @@ heatmap_KNN.Title = "KNN confusion matrix";
 heatmap_KNN.XLabel = "True value";
 heatmap_KNN.YLabel = "Classification";
 heatmap_KNN.ColorScaling = 'log';
+
+
 
 %% Conclusion
 % Interestingly, the NN classifier outperforms the KNN classifier. Looking
