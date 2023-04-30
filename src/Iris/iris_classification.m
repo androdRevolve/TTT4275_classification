@@ -1,10 +1,10 @@
 clear all
 close all
 
-plot_histograms = false;
-remove_sepal_width = false;
-remove_sepal_length = false;
-remove_petal_length = false;
+plot_histograms = true;
+remove_sepal_width = true;
+remove_sepal_length = true;
+remove_petal_length = true;
 %trainSamples: indeces of samples used for training
 trainSamples = 1:30;
 %testSamples: indeces of samples used for evaluation
