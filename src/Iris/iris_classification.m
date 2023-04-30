@@ -1,77 +1,97 @@
 clear all
 close all
+
+plot_histograms = false;
+remove_sepal_width = false;
+remove_sepal_length = false;
+remove_petal_length = false;
+%trainSamples: indeces of samples used for training
+trainSamples = 1:30;
+%testSamples: indeces of samples used for evaluation
+testSamples = 31:50;
+%training_mode: "softmax" for softmax activation function and cross-entropy
+%loss function, "sigmoid" for sigmoid activation function and L2 error loss
+%function
+training_mode = "oftmax";
 x1all = load('class_1','-ascii');
 x2all = load('class_2','-ascii');
 x3all = load('class_3','-ascii');
 %% Exploritary data analysis
 % Histograms
 % Sepal length
-fig = figure;
-subplot(2,2,1);
-nbins = 30;
-samples = 1:50;
-histogram(x1all(samples,1),nbins);
-hold on;
-histogram(x2all(samples,1),nbins);
-hold on;
-histogram(x3all(samples,1),nbins);
-legend("Iris Setosa", "Iris Versicolour", "Iris Virginica",'interpreter','latex');
-title("Sepal length",'Interpreter','latex');
-xlabel("length [cm]",'Interpreter','latex');
-grid on;
+if plot_histograms == true
+    fig = figure;
+    subplot(2,2,1);
+    nbins = 30;
+    samples = 1:50;
+    histogram(x1all(samples,1),nbins);
+    hold on;
+    histogram(x2all(samples,1),nbins);
+    hold on;
+    histogram(x3all(samples,1),nbins);
+    legend("Iris Setosa", "Iris Versicolour", "Iris Virginica",'interpreter','latex');
+    title("Sepal length",'Interpreter','latex');
+    xlabel("length [cm]",'Interpreter','latex');
+    grid on;
+    
+    %Sepal width
+    subplot(2,2,2);
+    nbins = 30;
+    histogram(x1all(samples,2),nbins);
+    hold on;
+    histogram(x2all(samples,2),nbins);
+    hold on;
+    histogram(x3all(samples,2),nbins);
+    legend("Iris Setosa", "Iris Versicolour", "Iris Virginica",'interpreter','latex');
+    title("Sepal width",'Interpreter','latex');
+    xlabel("width [cm]",'Interpreter','latex');
+    grid on;
+    
+    %Petal length
+    subplot(2,2,3);
+    nbins = 30;
+    histogram(x1all(samples,3),nbins);
+    hold on;
+    histogram(x2all(samples,3),nbins);
+    hold on;
+    histogram(x3all(samples,3),nbins);
+    legend("Iris Setosa", "Iris Versicolour", "Iris Virginica",'interpreter','latex');
+    title("Petal length",'Interpreter','latex');
+    xlabel("length [cm]",'Interpreter','latex');
+    grid on;
+    
+    %Petal width
+    subplot(2,2,4);
+    nbins = 30;
+    histogram(x1all(samples,4),nbins);
+    hold on;
+    histogram(x2all(samples,4),nbins);
+    hold on;
+    histogram(x3all(samples,4),nbins);
+    legend("Iris Setosa", "Iris Versicolour", "Iris Virginica",'interpreter','latex');
+    title("Petal width",'Interpreter','latex');
+    xlabel("width [cm]",'Interpreter','latex');
+    grid on;
+end
 
-%Sepal width
-subplot(2,2,2);
-nbins = 30;
-histogram(x1all(samples,2),nbins);
-hold on;
-histogram(x2all(samples,2),nbins);
-hold on;
-histogram(x3all(samples,2),nbins);
-legend("Iris Setosa", "Iris Versicolour", "Iris Virginica",'interpreter','latex');
-title("Sepal width",'Interpreter','latex');
-xlabel("width [cm]",'Interpreter','latex');
-grid on;
-
-%Petal length
-subplot(2,2,3);
-nbins = 30;
-histogram(x1all(samples,3),nbins);
-hold on;
-histogram(x2all(samples,3),nbins);
-hold on;
-histogram(x3all(samples,3),nbins);
-legend("Iris Setosa", "Iris Versicolour", "Iris Virginica",'interpreter','latex');
-title("Petal length",'Interpreter','latex');
-xlabel("length [cm]",'Interpreter','latex');
-grid on;
-
-%Petal width
-subplot(2,2,4);
-nbins = 30;
-histogram(x1all(samples,4),nbins);
-hold on;
-histogram(x2all(samples,4),nbins);
-hold on;
-histogram(x3all(samples,4),nbins);
-legend("Iris Setosa", "Iris Versicolour", "Iris Virginica",'interpreter','latex');
-title("Petal width",'Interpreter','latex');
-xlabel("width [cm]",'Interpreter','latex');
-grid on;
-
-%% Remove petal lenght
-x1all(:,1) = [];
-x2all(:,1) = [];
-x3all(:,1) = [];
-
-%% Remove sepal width
-x1all(:,2) = [];
-x2all(:,2) = [];
-x3all(:,2) = [];
 %% Remove sepal length
-x1all(:,1) = [];
-x2all(:,1) = [];
-x3all(:,1) = [];
+if remove_sepal_length == true
+    x1all(:,1) = [];
+    x2all(:,1) = [];
+    x3all(:,1) = [];
+end
+%% Remove sepal width
+if remove_sepal_width == true
+    x1all(:,1) = [];
+    x2all(:,1) = [];
+    x3all(:,1) = [];
+end
+%% Remove petal lenght
+if remove_petal_length == true
+    x1all(:,1) = [];
+    x2all(:,1) = [];
+    x3all(:,1) = [];
+end
 %% Data pre-processing
 % Input normalization
 Max = max([x1all;x2all;x3all]);
@@ -83,8 +103,7 @@ x2all = (x2all-Min)./(Max-Min);
 x3all = (x3all-Min)./(Max-Min);
 
 % Homogeneus form
-trainSamples = 1:30;
-testSamples = 31:50;
+
 
 x1train = [ones(length(trainSamples),1), x1all(trainSamples,:)];
 x2train = [ones(length(trainSamples),1), x2all(trainSamples,:)];
@@ -124,26 +143,25 @@ numFeatures = height(xtrain)-1;
 % Hyperparameters
 numEpochs = 1500;
 alpha = 0.3;
-eta = alpha;
-decay = 0.1;
 %Random initial values
 W = randn(numClasses, numFeatures+1);% +1 for bias term
 Errors = zeros(1,numEpochs);
 tic;
 for j = 1:numEpochs
-    %alpha = eta /(1+decay*j);
     gradW = zeros(numClasses, numFeatures+1);
     E = 0;
     for i = 1:length(xtrain)
         x = xtrain(:,i);
         y = ytrain(:,i);
-        g = sig(W*x);
-        %g = softmax(W*x);
-        gradW = gradW + (((g-y).*g).*(1-g))*x';
-        %gradW = gradW + (softmaxGradient(W*x)*(g-y))*x';
-        %gradW = gradW -(softmaxGradient(W*x)*(y./g))*x';
-        %E = E - log(g)'*y;
-        E = E + (g-y)'*(g-y);
+        if training_mode == "sigmoid"
+            g = sig(W*x);
+            gradW = gradW + (((g-y).*g).*(1-g))*x';
+            E = E + (g-y)'*(g-y);
+        elseif training_mode == "softmax"
+            g = softmax(W*x);
+            gradW = gradW -(softmaxGradient(W*x)*(y./g))*x';
+            E = E - log(g)'*y;
+        end
     end
     Errors(j) = E;
     W = W - alpha*gradW;
