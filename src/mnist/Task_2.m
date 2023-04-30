@@ -2,6 +2,7 @@
 % Use clustering to produce a small(er) set of templates for each class.
 N_clusters = 64;
 N_classes = 10;
+load('data_all.mat');
 
 %% a)  Perform clustering of the 6000 training vectors for each class into M = 64 clusters.
 % Separate training data into matrix based on class

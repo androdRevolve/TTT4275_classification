@@ -4,6 +4,7 @@
 % find the training reference with the smallest distance and classify as
 % that target
 %% Init
+load('data_all.mat');
 num_references = 1000;
 num_samples = 10000;
 %% Run classification using the first num_references references and the first num_samples test features
