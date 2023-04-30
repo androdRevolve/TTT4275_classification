@@ -36,48 +36,10 @@ end
 class = class'-1;
 toc;
 
-%% b) Find the confusion matrix and the error rate for the NN classifier using these M = 64
-% templates pr class. Comment on the processing time and the performance relatively to
-% using all training vectors as templates.
+%% Evaluate
+classifier_evaluate(class,testlab);
 
-% Error rate
-is_equal = class == testlab;
-num_correct = sum(is_equal);
-num_errors = length(testlab)-num_correct;
-error_rate = num_errors / length(testlab) * 100;
-
-% Confusion matrix
-mtrx_confusion = calc_confusion_matrix(testlab, class);
-
-% Display
-disp(strcat("The error rate for the clustered NN is ", num2str(error_rate), "%."));
-
-figure;
-heatmap_NN = heatmap({'0', '1', '2,' '3', '4', '5', '6', '7', '8', '9'}, {'0', '1', '2,' '3', '4', '5', '6', '7', '8', '9'}, mtrx_confusion);
-heatmap_NN.Title = "NN confusion matrix";
-heatmap_NN.XLabel = "True value";
-heatmap_NN.YLabel = "Classification";
-heatmap_NN.ColorScaling = 'log';
-
-% %% Plot some misclassified pictures
-% % Plot the first 5 misclassified pictures
-% num_plotted = 0;
-% i = 4000;
-% while num_plotted < 5
-%     if(~is_equal(i))
-%         % Convert picture from vector to matrix
-%         mtrx_pic = zeros(col_size,row_size); mtrx_pic(:) = testv(52,:);
-%         image(mtrx_pic');
-%         num_plotted = num_plotted+1;
-%     end
-%     i = i+1;
-% end
-
-
-
-
-%% c) Now design a KNN classifier with K=7. Find the confusion matrix and the error rate and
-% compare to the two other systems.
+%% c) Now design a KNN classifier with K=7
 tic;
 K_knn = 7;
 
@@ -120,57 +82,6 @@ for i=1:length(testlab)
 end
 toc;
 %% Evaluate performance
-
-% Error rate
-is_equal = classes == testlab;
-num_correct = sum(is_equal);
-num_errors = length(testlab)-num_correct;
-error_rate = num_errors / length(testlab) * 100;
-
-% Confusion matrix
-mtrx_confusion = calc_confusion_matrix(testlab, classes);
-
-% Display
-disp(strcat("The error rate for the clustered KNN classifier is ", num2str(error_rate), "%."));
-figure;
-heatmap_KNN = heatmap({'0', '1', '2,' '3', '4', '5', '6', '7', '8', '9'}, {'0', '1', '2,' '3', '4', '5', '6', '7', '8', '9'}, mtrx_confusion);
-heatmap_KNN.Title = "KNN confusion matrix";
-heatmap_KNN.XLabel = "True value";
-heatmap_KNN.YLabel = "Classification";
-heatmap_KNN.ColorScaling = 'log';
-
-
-
-%% Conclusion
-% Interestingly, the NN classifier outperforms the KNN classifier. Looking
-% at the results (define test = (class == testlab & classes ~= testlab)) it
-% appears that the reason is that the KNN classifier sometimes gets
-% "infiltrated" by wrong neighbors, e.g. "9" is correct and closest, but
-% "9" gets outvoted by "7". The conclusion: for this dataset, the
-% "MAP"-classifier outperforms the KNN; we should rather trust the single
-% closest neighbor than the K closest.
-
-% The KNN classifier outperforms the NN classifier without clustering
-% implemented in task 1.
-
-% Clustering has a big impact on the runtime of the classification. With
-% clustering, some time is spent on the clustering algorithm that
-% initializes the references. When the references are done, the computation
-% is much faster for each new feature x, as the total number of references
-% is much lower (640 vs 1k in the default case).
-
-% Timing:
-% 64 clusters
-% Reference sorting and clustering: 98.30 seconds 
-% Classification: 11.42 seconds (NN), 12.1 seconds (KNN)
-
-% 32 clusters
-% Reference sorting and clustering: 99.36 seconds
-% Classification: 5.85 seconds (NN), 6.77 seconds (KNN)
-
-% Error rates:
-% 64 clusters: 4.6% (NN), 6.02% (KNN)
-% 32 clusters: 5.26% (NN), 8.95% (KNN)
-
+classifier_evaluate(classes, testlab);
 
 disp('..done');
