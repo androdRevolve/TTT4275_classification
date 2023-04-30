@@ -9,7 +9,7 @@ x3all = load('class_3','-ascii');
 fig = figure;
 subplot(2,2,1);
 nbins = 30;
-samples = 1:50;
+samples = 1:20;
 histogram(x1all(samples,1),nbins);
 hold on;
 histogram(x2all(samples,1),nbins);
@@ -157,7 +157,7 @@ grid on;
 xlabel("Epoch",'Interpreter','latex');
 ylabel("Loss function value",'Interpreter','latex');
 title("Loss function as a function of epoch number, for sigmoid activation function",'Interpreter','latex');
-%exportgraphics(fig,"L2error_softmax.pdf")
+exportgraphics(fig,"Lossfunc_sigmoid.pdf")
 
 %% Evaluation
 confMatrixtest = zeros(numClasses,numClasses);
